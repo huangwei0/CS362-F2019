@@ -1026,7 +1026,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 }
 
 
-int mineaction (struct gameState *state, int handPos, int trashPos, int gainCard)
+int mineaction (struct gameState *state, int handPos, int trashPos, int gaincard)
 {
 int currentPlayer = whoseTurn(state);
 int j= state->hand[currentPlayer][trashPos];  //store card we will trash
@@ -1037,12 +1037,12 @@ int j= state->hand[currentPlayer][trashPos];  //store card we will trash
             return -1;
         }
 
-        if (gainCard > treasure_map || gainCard < curse)
+        if (gaincard > treasure_map || gaincard < curse)
         {
             return -1;
         }
 
-        if ( (getCost(state->hand[currentPlayer][trashPos]) + 3) > getCost(gaincard) )
+        if ( (getCost(state->hand[currentPlayer][trashPos])) < getCost(gaincard) )
         {
             return -1;
         }
@@ -1073,7 +1073,7 @@ int baronaction(int discard, struct gameState *state, int currentPlayer){
             int card_not_discarded = 1;//Flag for discard set!
             while(card_not_discarded) {
                 if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-                    state->coins += 4;//Add 4 coins to the amount of coins
+                    state->coins += 2;//Add 4 coins to the amount of coins
                     state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
                     state->discardCount[currentPlayer]++;
                     for (; p < state->handCount[currentPlayer]; p++) {
@@ -1081,7 +1081,7 @@ int baronaction(int discard, struct gameState *state, int currentPlayer){
                     }
                     state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
                     state->handCount[currentPlayer]--;
-                    card_not_discarded = 0;//Exit the loop
+                    return 0;//Exit the loop
                 }
                 else if (p > state->handCount[currentPlayer]) {
                     if(DEBUG) {
@@ -1123,13 +1123,15 @@ int baronaction(int discard, struct gameState *state, int currentPlayer){
 int minionaction(int gainCoins, struct gameState *state, int currentPlayer, int handPos)
    //+1 action
         state->numActions++;
+	int i;
+	int j;
 
         //discard card from hand
         discardCard(handPos, currentPlayer, state, 0);
 
 		if (gainCoins)
         {
-            state->coins = state->coins + 2;
+            state->coins = state->coins;
         }
         else if (handPos)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
         {
@@ -1159,7 +1161,7 @@ int minionaction(int gainCoins, struct gameState *state, int currentPlayer, int 
                         }
 
                         //draw 4
-                        for (j = 0; j < 4; j++)
+                        for (j = 0; j < 4; j+2)
                         {
                             drawCard(i, state);
                         }
@@ -1174,7 +1176,7 @@ int minionaction(int gainCoins, struct gameState *state, int currentPlayer, int 
 int tributeaction(struct gameState *state, int handPos){
 	int currentPlayer = whoseTurn(state);
 	int nextPlayer = currentPlayer;
- 	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
+ 	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) < 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
                 state->deckCount[nextPlayer]--;
