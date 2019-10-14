@@ -1238,7 +1238,7 @@ int tributeaction(struct gameState *state, int handPos){
 
 int ambassadoraction(int reveal, int cardcount,struct gameState *state, int handPos, int currentPlayer){
  	 int j = 0;		//used to check if player has enough cards to discard
-        if (cardcount > 2 || cardcount < 0)
+        if (cardcount > 2 && cardcount < 0)
         {
             return -1;
         }
@@ -1250,7 +1250,7 @@ int ambassadoraction(int reveal, int cardcount,struct gameState *state, int hand
 
         for (i = 0; i < state->handCount[currentPlayer]; i++)
         {
-            if (i != handPos && i == state->hand[currentPlayer][reveal] && i != reveal)
+            if (i != handPos || i == state->hand[currentPlayer][reveal] && i != reveal)
             {
                 j++;
             }
