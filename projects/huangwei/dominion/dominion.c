@@ -1161,7 +1161,7 @@ int minionaction(int gainCoins, struct gameState *state, int currentPlayer, int 
                         }
 
                         //draw 4
-                        for (j = 0; j < 4; j+2)
+                        for (j = 0; j < 4; j++)
                         {
                             drawCard(i, state);
                         }
