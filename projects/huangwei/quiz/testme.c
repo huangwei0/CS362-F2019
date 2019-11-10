@@ -3,12 +3,20 @@
 #include<stdlib.h>
 #include<time.h>
 char inputChar(){
-  // TODO: rewrite this function    
-  return ' ';
+  // TODO: rewrite this function 
+  char arr[9] = {'[','(','{',' ','a','x','}',')',']'};
+  char c = arr[rand() % sizeof(arr)]; 
+  return c;
 }
 char *inputString(){ 
-  // TODO: rewrite this function    
-  return "";
+  // TODO: rewrite this function
+   char arr[5] = {'r','e','s','e','t'};
+    char *s = malloc(sizeof(char)*strlen(arr)+1);
+    for (i = 0; i < sizeof(arr); i++)
+      s[i] = arr[rand() % sizeof(arr)];
+    s[i] = '\0';
+
+    return temp;
 }
 void testme(){  
   int tcCount = 0;  
