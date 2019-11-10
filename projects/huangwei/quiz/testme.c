@@ -10,13 +10,14 @@ char inputChar(){
 }
 char *inputString(){ 
   // TODO: rewrite this function
+  size_t i;
    char arr[5] = {'r','e','s','e','t'};
     char *s = malloc(sizeof(char)*strlen(arr)+1);
     for (i = 0; i < sizeof(arr); i++)
       s[i] = arr[rand() % sizeof(arr)];
     s[i] = '\0';
 
-    return temp;
+    return s;
 }
 void testme(){  
   int tcCount = 0;  
