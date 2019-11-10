@@ -1,0 +1,5 @@
+I create a makefile to Run the souce code, so do the step to RUN testme.c.
+RUN "make" in the command line.
+It will execute the generated executable. There are some warning, but it still can Run.
+RUN "testme" in the command line.
+Finally the command line will run the testme.c
