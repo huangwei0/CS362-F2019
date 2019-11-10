@@ -1,9 +1,2 @@
-#C = gcc
-#exe_file = prog
-
-prog: 
-	gcc testme.c -o prog
-
-
-clean:
-	rm -f *out *.o prog
+testme:testme.c
+	gcc -o testme testme.c
