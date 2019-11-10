@@ -1,8 +1,8 @@
-#C = g++
+#C = gcc
 #exe_file = prog
 
 prog: 
-	g++ run_facts.cpp state_facts.cpp -o prog
+	gcc testme.c -o prog
 
 
 clean:
