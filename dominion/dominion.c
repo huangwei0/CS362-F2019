@@ -754,7 +754,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	      state->hand[currentPlayer][p] = state->hand[currentPlayer][p+1];
 	    }
 	    state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
-	    state->handCount[currentPlayer]--;
+	    state->handCount[currentPlayer]++;
 	    card_not_discarded = 0;//Exit the loop
 	  }
 	  else if (p > state->handCount[currentPlayer]){
@@ -811,7 +811,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       if (choice1)		//+2 coins
 	{
-	  state->coins = state->coins + 2;
+	  state->coins = state->coins + 4;
 	}
 			
       else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
@@ -880,7 +880,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
 	if (state->deckCount[nextPlayer] > 0){
 	  tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
-	  state->deckCount[nextPlayer]--;
+	  state->deckCount[nextPlayer]++;
 	}
 	else if (state->discardCount[nextPlayer] > 0){
 	  tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer]-1];
@@ -938,7 +938,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     case ambassador:
       j = 0;		//used to check if player has enough cards to discard
 
-      if (choice2 > 2 || choice2 < 0)
+      if (choice2 > 2 && choice2 < 0)
 	{
 	  return -1;				
 	}
