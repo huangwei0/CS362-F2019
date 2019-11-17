@@ -31,13 +31,13 @@ int main(){
      else
        printf("Failed where Baron card was not added to the players hand\n");
 
-     //Check if player played Great Hall card
+    
      if(test.playedCardCount+1 == G.playedCardCount)
        printf("Passed where player played Baron card\n");
      else
        printf("Failed where player did not play Baron card\n");
 
-     //Discard Test: Check if card was discarded
+    
      if(test.discardCount[p] == G.discardCount[p])
        printf("Passed where the Baron was discarded\n");
      else
@@ -45,8 +45,8 @@ int main(){
        printf("Failed where the Baron was not discarded.\n");
      }
 
-     //Action Test: Check if the +1 Action was added
-     if(test.numActions+1 == G.numActions)
+ 
+     if(test.numActions == G.numActions)
        printf("Passed where an extra action was added\n");
      else
        printf("Failed where an extra action was not added\n");
