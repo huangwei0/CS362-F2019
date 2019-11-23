@@ -808,12 +808,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     case mine:
         j = state->hand[currentPlayer][choice1];  //store card we will trash
 
-        if (state->hand[currentPlayer][choice1] < copper && state->hand[currentPlayer][choice1] > gold)//orginal should be ||
+        if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
         {
             return -1;
         }
 
-        if (choice2 < treasure_map || choice2 < curse)//orginal the first sign should be >
+        if (choice2 > treasure_map || choice2 < curse)
         {
             return -1;
         }
@@ -895,9 +895,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
             int card_not_discarded = 1;//Flag for discard set!
             while(card_not_discarded) {
                 if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-                    state->coins += 2;//Add 4 coins to the amount of coins   bug
+                    state->coins += 4;//Add 4 coins to the amount of coins   bug
                     state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
-                    state->discardCount[currentPlayer]--; //bug original should ++
+                    state->discardCount[currentPlayer]++; 
                     for (; p < state->handCount[currentPlayer]; p++) {
                         state->hand[currentPlayer][p] = state->hand[currentPlayer][p+1];
                     }
@@ -1026,10 +1026,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case tribute:
-        if ((state->discardCount[nextPlayer] - state->deckCount[nextPlayer]) <= 1) {//should be +
+        if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
             if (state->deckCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
-                state->deckCount[nextPlayer]++;//should be --
+                state->deckCount[nextPlayer]--;
             }
             else if (state->discardCount[nextPlayer] > 0) {
                 tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer]-1];
@@ -1087,7 +1087,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     case ambassador:
         j = 0;		//used to check if player has enough cards to discard
 
-        if (choice2 > 2 && choice2 < 0)//orginal secnd sign should be ||
+        if (choice2 > 2 || choice2 < 0)
         {
             return -1;
         }
@@ -1118,7 +1118,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         //each other player gains a copy of revealed card
         for (i = 0; i < state->numPlayers; i++)
         {
-            if (i == currentPlayer) //orginal should be !=
+            if (i != currentPlayer) 
             {
                 gainCard(state->hand[currentPlayer][choice1], state, 0, i);
             }
