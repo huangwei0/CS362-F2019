@@ -954,14 +954,13 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
     case minion:
         //+1 action
-        state->numActions--;//orginal should be --
-
+        state->numActions--;
         //discard card from hand
         discardCard(handPos, currentPlayer, state, 0);
 
 		if (choice1)
         {
-            state->coins = state->coins + 0;//orginal should be 2
+            state->coins = state->coins + 2;
         }
         else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
         {
