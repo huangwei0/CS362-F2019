@@ -1,0 +1,137 @@
+        -:    0:Source:playdom.c
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include <stdio.h>
+        -:    3:#include "rngs.h"
+        -:    4:#include <stdlib.h>
+        -:    5:
+        2:    6:int main (int argc, char** argv) {
+        -:    7:    struct gameState G;
+        2:    8:    int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
+        -:    9:                 sea_hag, tribute, smithy
+        -:   10:                };
+        -:   11:
+        2:   12:    printf ("Starting game.\n");
+        -:   13:
+        2:   14:    initializeGame(2, k, atoi(argv[1]), &G);
+        -:   15:
+        2:   16:    int money = 0;
+        2:   17:    int smithyPos = -1;
+        2:   18:    int adventurerPos = -1;
+        2:   19:    int i=0;
+        -:   20:
+        2:   21:    int numSmithies = 0;
+        2:   22:    int numAdventurers = 0;
+        -:   23:
+       84:   24:    while (!isGameOver(&G)) {
+       80:   25:        money = 0;
+       80:   26:        smithyPos = -1;
+       80:   27:        adventurerPos = -1;
+      480:   28:        for (i = 0; i < numHandCards(&G); i++) {
+      400:   29:            if (handCard(i, &G) == copper)
+      168:   30:                money++;
+      232:   31:            else if (handCard(i, &G) == silver)
+       92:   32:                money += 2;
+      140:   33:            else if (handCard(i, &G) == gold)
+       20:   34:                money += 3;
+      120:   35:            else if (handCard(i, &G) == smithy)
+        6:   36:                smithyPos = i;
+      114:   37:            else if (handCard(i, &G) == adventurer)
+       12:   38:                adventurerPos = i;
+        -:   39:        }
+        -:   40:
+       80:   41:        if (whoseTurn(&G) == 0) {
+       40:   42:            if (smithyPos != -1) {
+        4:   43:                printf("0: smithy played from position %d\n", smithyPos);
+        4:   44:                playCard(smithyPos, -1, -1, -1, &G);
+        4:   45:                printf("smithy played.\n");
+        4:   46:                money = 0;
+        4:   47:                i=0;
+       36:   48:                while(i<numHandCards(&G)) {
+       28:   49:                    if (handCard(i, &G) == copper) {
+       18:   50:                        playCard(i, -1, -1, -1, &G);
+       18:   51:                        money++;
+        -:   52:                    }
+       10:   53:                    else if (handCard(i, &G) == silver) {
+        6:   54:                        playCard(i, -1, -1, -1, &G);
+        6:   55:                        money += 2;
+        -:   56:                    }
+        4:   57:                    else if (handCard(i, &G) == gold) {
+    #####:   58:                        playCard(i, -1, -1, -1, &G);
+    #####:   59:                        money += 3;
+        -:   60:                    }
+       28:   61:                    i++;
+        -:   62:                }
+        -:   63:            }
+        -:   64:
+       40:   65:            if (money >= 8) {
+        6:   66:                printf("0: bought province\n");
+        6:   67:                buyCard(province, &G);
+        -:   68:            }
+       34:   69:            else if (money >= 6) {
+       10:   70:                printf("0: bought gold\n");
+       10:   71:                buyCard(gold, &G);
+        -:   72:            }
+       24:   73:            else if ((money >= 4) && (numSmithies < 2)) {
+        4:   74:                printf("0: bought smithy\n");
+        4:   75:                buyCard(smithy, &G);
+        4:   76:                numSmithies++;
+        -:   77:            }
+       20:   78:            else if (money >= 3) {
+       16:   79:                printf("0: bought silver\n");
+       16:   80:                buyCard(silver, &G);
+        -:   81:            }
+        -:   82:
+       40:   83:            printf("0: end turn\n");
+       40:   84:            endTurn(&G);
+        -:   85:        }
+        -:   86:        else {
+       40:   87:            if (adventurerPos != -1) {
+       12:   88:                printf("1: adventurer played from position %d\n", adventurerPos);
+       12:   89:                playCard(adventurerPos, -1, -1, -1, &G);
+       12:   90:                money = 0;
+       12:   91:                i=0;
+      108:   92:                while(i<numHandCards(&G)) {
+       84:   93:                    if (handCard(i, &G) == copper) {
+       30:   94:                        playCard(i, -1, -1, -1, &G);
+       30:   95:                        money++;
+        -:   96:                    }
+       54:   97:                    else if (handCard(i, &G) == silver) {
+       24:   98:                        playCard(i, -1, -1, -1, &G);
+       24:   99:                        money += 2;
+        -:  100:                    }
+       30:  101:                    else if (handCard(i, &G) == gold) {
+        6:  102:                        playCard(i, -1, -1, -1, &G);
+        6:  103:                        money += 3;
+        -:  104:                    }
+       84:  105:                    i++;
+        -:  106:                }
+        -:  107:            }
+        -:  108:
+       40:  109:            if (money >= 8) {
+       10:  110:                printf("1: bought province\n");
+       10:  111:                buyCard(province, &G);
+        -:  112:            }
+       30:  113:            else if ((money >= 6) && (numAdventurers < 2)) {
+        4:  114:                printf("1: bought adventurer\n");
+        4:  115:                buyCard(adventurer, &G);
+        4:  116:                numAdventurers++;
+       26:  117:            } else if (money >= 6) {
+       10:  118:                printf("1: bought gold\n");
+       10:  119:                buyCard(gold, &G);
+        -:  120:            }
+       16:  121:            else if (money >= 3) {
+       16:  122:                printf("1: bought silver\n");
+       16:  123:                buyCard(silver, &G);
+        -:  124:            }
+       40:  125:            printf("1: endTurn\n");
+        -:  126:
+       40:  127:            endTurn(&G);
+        -:  128:        }
+        -:  129:    } // end of While
+        -:  130:
+        2:  131:    printf ("Finished game.\n");
+        2:  132:    printf ("Player 0: %d\nPlayer 1: %d\n", scoreFor(0, &G), scoreFor(1, &G));
+        -:  133:
+        2:  134:    return 0;
+        -:  135:}

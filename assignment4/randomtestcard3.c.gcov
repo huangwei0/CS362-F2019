@@ -1,0 +1,61 @@
+        -:    0:Source:randomtestcard3.c
+        -:    0:Graph:randomtestcard3.gcno
+        -:    0:Data:randomtestcard3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "dominion.h"
+        -:    2:#include "dominion_helpers.h"
+        -:    3:#include <string.h>
+        -:    4:#include "rngs.h"
+        -:    5:#include <stdio.h>
+        -:    6:#include <math.h>
+        -:    7:#include <stdlib.h>
+        -:    8:#include <assert.h>
+        -:    9:#include<time.h>
+        -:   10:
+        1:   11:int main(){
+        1:   12:  int i, n, r, p, handpos = 0, choice1 = 0, choice2 = 0, choice3 = 0, bonus = 0;
+        1:   13:  int k[10] = {adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron,great_hall};
+        -:   14:
+        -:   15:  struct gameState G, test;
+        1:   16:  printf("Testing tribute\n");
+        1:   17:  printf("RANDOM TESTS\n");
+       51:   18:  for(n=0; n<50; n++){
+       50:   19:     int players = (rand() % 50);
+       50:   20:     int seed =(rand() % 5000);
+        -:   21:
+       50:   22:     initializeGame(players, k, seed, &G);
+       50:   23:     printf("\n--------Running round %d/50--------\n", n+1);
+       50:   24:     memcpy(&test, &G, sizeof(struct gameState));
+       50:   25:     cardEffect(tribute, choice1, choice2, choice3, &G, handpos, &bonus);
+        -:   26:
+       50:   27:     p = whoseTurn(&test);
+        -:   28:
+       50:   29:     if(G.hand[p][test.handCount[p]-1] != -1)
+       50:   30:       printf("Passed where tribute card was added to the players hand\n");
+        -:   31:     else
+    #####:   32:       printf("Failed where tribute card was not added to the players hand\n");
+        -:   33:
+        -:   34:     //Check if player played Great Hall card
+       50:   35:     if(test.playedCardCount+1 == G.playedCardCount)
+       48:   36:       printf("Passed where player played tribute card\n");
+        -:   37:     else
+        2:   38:       printf("Failed where player did not play tribute card\n");
+        -:   39:
+        -:   40:     //Discard Test: Check if card was discarded
+       50:   41:     if(test.discardCount[p] == G.discardCount[p])
+       50:   42:       printf("Passed where the tribute was discarded\n");
+        -:   43:     else
+        -:   44:     {
+    #####:   45:       printf("Failed where the tribute was not discarded.\n");
+        -:   46:     }
+        -:   47:
+        -:   48:     //Action Test: Check if the +1 Action was added
+       50:   49:     if(test.numActions+1 == G.numActions)
+    #####:   50:       printf("Passed where an extra action was added\n");
+        -:   51:     else
+       50:   52:       printf("Failed where an extra action was not added\n");
+        -:   53:
+        -:   54:    }
+        1:   55:    printf("\nTEST COMPLETE!\n");
+        -:   56:  }
